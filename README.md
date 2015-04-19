@@ -9,7 +9,7 @@ Do a Fabric Deployment with the script in /deployment Folder
  
  PS : Change the settings.py file database user/password if required 
  
- ##Load Data To Redis
+##Load Data To Redis
  After Installation is complete you need to load all the data from csv to redis once 
 
  >> Python manage.py databuilder 
