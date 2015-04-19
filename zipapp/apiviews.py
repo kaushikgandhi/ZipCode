@@ -11,17 +11,12 @@ from rest_framework.response import Response
 import redis
 from django.conf import settings
 
+from .tasks import execute_pipe
 
 class ZipApi(GenericViewSet):
 	"""Api for searching Zip Codes"""
 
-	redis_client = redis.StrictRedis(host=settings.REDIS_HOST)
-	pipe = redis_client.pipeline()
 
-	def execute_pipe(self):
-		''' Execute the statements in pipe'''
-		results = self.pipe.execute()
-		return reduce(lambda a, b: a and b, results, True)
 
 	@require_params("query")
 	@list_route(methods=["get"])
@@ -29,21 +24,9 @@ class ZipApi(GenericViewSet):
 
 		query =  request.QUERY_PARAMS.get("query", None) #search term
 
-		self.pipe.keys("*%s*"%query.lower().replace(' ','_'))
+		
 
+		response_dict = execute_pipe.apply_async([query])
 
-		keys = self.execute_pipe()
-		response_dict = []
-		for key in keys:
-			data = key.split(":")
-			response_dict.append({
-				"pincode":data[0].replace('_',' '),
-				"division":data[1].replace('_',' '),
-				"region":data[2].replace('_',' '),
-				"taluk":data[3].replace('_',' '),
-				"district":data[4].replace('_',' '),
-				"state":data[5].replace('_',' '),
-				"address":data[6].replace('_',' ')
-				})
-
-		return Response(response_dict)
+		print response_dict
+		return Response(response_dict.get())

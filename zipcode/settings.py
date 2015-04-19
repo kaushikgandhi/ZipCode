@@ -25,7 +25,7 @@ SECRET_KEY = '5j^tl&#(wpuzaqp()4&@ucltg$x)dn)ttkdpjf-0-e924x&yk-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['54.69.200.1','127.0.0.1']
 
 
 # Application definition
@@ -107,3 +107,6 @@ STATIC_URL = '/static/'
 
 
 REDIS_HOST = '127.0.0.1'
+
+BROKER_URL = 'redis://'+REDIS_HOST+':6379/0'
+BROKER_TRANSPORT = 'redis'
