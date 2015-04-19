@@ -25,4 +25,7 @@ Do a Fabric Deployment with the script in /deployment Folder
 You can also run it with supervisord
 
 
+##Demo URL 
+
+http://54.69.200.1 
 
