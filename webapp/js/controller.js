@@ -4,13 +4,27 @@ myApp.controller('zipController', ['$scope','$http', function($scope,$http) {
   $scope.query = '';
   $scope.table_data = '';
       $scope.search_zipcode = function(){
-  	$http({url:'http://54.69.200.1/api/v1/search?query='+$scope.query,method:'GET'}).success(function(data){
+        if($scope.query=="")
+        {
+          alert("Query Cannot Be Blank");
+          return;
+        }
 
-  			$scope.table_data = data;
-  			
-  	}).error(function(){
-  		$scope.table_data = '';
-  	});
+        $('.loading').show();
+
+        $http({url:'http://54.69.200.1/api/v1/search?query='+$scope.query,method:'GET'}).success(function(data){
+
+                  $scope.table_data = data;
+            $('#example').DataTable();
+            $('.loading').hide();
+
+          }).error(function(){
+            $('.loading').hide();
+              $scope.table_data = '';
+            $('#example').DataTable({ "language": {
+              "emptyTable": "No Search Results To Show."
+            }});
+          });
   };
 
 }]);
