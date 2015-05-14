@@ -1,5 +1,5 @@
 # ZipCode
-A Web App for searching through Indian Zipcodes 
+A Web App for searching through Indian Zipcodes Using Redis And django-rest-framework
 
 ##Installation
 
